@@ -1,0 +1,14 @@
+# Esta función reemplaza los valores NaN por identificadores únicos, sin reemplazar ni duplicarse con los ya existentes
+
+import numpy as np
+
+def reemplazar_nan_con_ids_unicos(df, nombre_columna):
+    max_id = df[nombre_columna].max()
+    if pd.isnull(max_id):
+        max_id = 0 
+    nuevos_ids = range(int(max_id) + 1, int(max_id) + 1 + df[nombre_columna].isna().sum())
+    idx_nan = df[df[nombre_columna].isna()].index
+    for nuevo_id, idx in zip(nuevos_ids, idx_nan):
+        df.at[idx, nombre_columna] = nuevo_id
+
+reemplazar_nan_con_ids_unicos(data, 'customer_id')
